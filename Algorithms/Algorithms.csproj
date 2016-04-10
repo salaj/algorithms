@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="bases\GraphBase.cs" />
     <Compile Include="builders\Builder.cs" />
-    <Compile Include="containers\Node.cs" />
     <Compile Include="bases\Algorithm.cs" />
     <Compile Include="bases\AlgorithmBase.cs" />
     <Compile Include="algorithms\Dijkstra.cs" />

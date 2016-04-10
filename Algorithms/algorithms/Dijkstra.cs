@@ -9,7 +9,7 @@ namespace Algorithms
 {
     public class Dijkstra : GraphBase
     {
-        private SortedSet<Node> priorityQueue;
+        private SortedDictionary<int, List<Vertex>> priorityQueue;
         private IList<int> lengthsFromBeginning;
         private IDictionary<Vertex, Vertex> previousVertex;
         private int StartVertexIndex;
@@ -56,33 +56,46 @@ namespace Algorithms
             }
 
             lengthsFromBeginning[StartVertexIndex] = 0;
-            priorityQueue = new SortedSet<Node>();
+            priorityQueue = new SortedDictionary<int, List<Vertex>>();
         }
 
         protected override void solveProblem()
         {
-            priorityQueue.Add(new Node { LengthFromBeginning = 0, Vertex = new Vertex(StartVertexIndex) });
+            priorityQueue.Add(0, new List<Vertex>()
+            {
+                new Vertex(StartVertexIndex)
+            });
             while (priorityQueue.Count > 0)
             {
-                Vertex peak = priorityQueue.Min.Vertex;
-                priorityQueue.Remove(priorityQueue.Min);
-                if (visited[peak.Id])
-                    continue;
-                visited[peak.Id] = true;
-                foreach (var edge in graph.Vertexes[peak])
+                List<Vertex> peaks = priorityQueue.First().Value;
+                priorityQueue.Remove(priorityQueue.First().Key);
+                foreach (var peak in peaks)
                 {
-                    int s = lengthsFromBeginning[peak.Id];
-                    int w = edge.Weight;
-                    int t = lengthsFromBeginning[edge.End.Id];
-                    if (s + w < t)
+                    foreach (var edge in graph.Vertexes[peak])
                     {
-                        lengthsFromBeginning[edge.End.Id] = s + w;
-                        priorityQueue.Add(new Node { LengthFromBeginning = lengthsFromBeginning[edge.End.Id], Vertex = edge.End });
-                        previousVertex[edge.End] = edge.Begin;
+                        int s = lengthsFromBeginning[peak.Id];
+                        int w = edge.Weight;
+                        int t = lengthsFromBeginning[edge.End.Id];
+                        if (s + w < t)
+                        {
+                            var l = lengthsFromBeginning[edge.End.Id] = s + w;
+                            if (priorityQueue.ContainsKey(l))
+                            {
+                                priorityQueue[l].Add(new Vertex(edge.End.Id));
+                            }
+                            else
+                            {
+                                priorityQueue.Add(l, new List<Vertex>()
+                                {
+                                    new Vertex(edge.End.Id)
+                                });
+                            }
+                            previousVertex[edge.End] = edge.Begin;
+                        }
                     }
+                    if (peak.Id == EndVertexIndex)
+                        break;
                 }
-                if (peak.Id == EndVertexIndex)
-                    break;
             }
         }
 
