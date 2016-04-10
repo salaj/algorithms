@@ -43,12 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bases\GraphBase.cs" />
+    <Compile Include="builders\Builder.cs" />
+    <Compile Include="containers\Node.cs" />
     <Compile Include="bases\Algorithm.cs" />
     <Compile Include="bases\AlgorithmBase.cs" />
     <Compile Include="algorithms\Dijkstra.cs" />
     <Compile Include="containers\Edge.cs" />
     <Compile Include="containers\Graph.cs" />
     <Compile Include="containers\IGraph.cs" />
+    <Compile Include="builders\GraphBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="containers\Vertex.cs" />

@@ -3,42 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Algorithms.bases;
 
 namespace Algorithms
 {
-    public class Node : IComparable
+    public class Dijkstra : GraphBase
     {
-        public int LengthFromBeginning { get; set; }
-        public Vertex Vertex;
-        public int CompareTo(object obj)
-        {
-            var node = obj as Node;
-            if (LengthFromBeginning < node.LengthFromBeginning)
-                return -1;
-            else
-            {
-                return 1;
-            }
-        }
-    }
-
-    public class Dijkstra : AlgorithmBase
-    {
-
-        private IGraph graph;
         private SortedSet<Node> priorityQueue;
         private IList<int> lengthsFromBeginning;
         private IDictionary<Vertex, Vertex> previousVertex;
-        private int startVertexIndex;
-        private int endVertexIndex;
+        private int StartVertexIndex;
+        private int EndVertexIndex;
+        private bool[] visited;
+        public float OptimalResult { get; set; }
+
+        private InitializeProblemHandler defaultInitializeProblemHandler => () =>
+        {
+            int graphSize = 6;
+            return GraphBuilder.Instance.Build(graphSize, new List<Edge>()
+            {
+                new Edge(3, 0, 1),
+                new Edge(1, 1, 2),
+                new Edge(3, 3, 1),
+                new Edge(3, 2, 3),
+                new Edge(1, 2, 5),
+                new Edge(1, 5, 3),
+                new Edge(6, 5, 0),
+                new Edge(2, 4, 5),
+                new Edge(3, 0, 4)
+            }, true);
+        };
+
+        public Dijkstra(int StartVertexIndex, int EndVertexIndex, InitializeProblemHandler initializeProblemHandler = null)
+        {
+            this.StartVertexIndex = StartVertexIndex;
+            this.EndVertexIndex = EndVertexIndex;
+            if (initializeProblemHandler == null)
+                base.Initialize(defaultInitializeProblemHandler);
+            else
+                base.Initialize(initializeProblemHandler);
+        }
+
+        protected override void initializeProblem()
+        {
+            visited = new bool[graph.VertexCount];
+            previousVertex = new Dictionary<Vertex, Vertex>(graph.VertexCount);
+            lengthsFromBeginning = new List<int>();
+            for (int i = 0; i < graph.VertexCount; i++)
+            {
+                lengthsFromBeginning.Add(int.MaxValue);
+                previousVertex[new Vertex(i)] = new Vertex(-1);
+            }
+
+            lengthsFromBeginning[StartVertexIndex] = 0;
+            priorityQueue = new SortedSet<Node>();
+        }
 
         protected override void solveProblem()
         {
-            priorityQueue.Add(new Node { LengthFromBeginning = 0, Vertex = new Vertex(startVertexIndex) });
+            priorityQueue.Add(new Node { LengthFromBeginning = 0, Vertex = new Vertex(StartVertexIndex) });
             while (priorityQueue.Count > 0)
             {
                 Vertex peak = priorityQueue.Min.Vertex;
                 priorityQueue.Remove(priorityQueue.Min);
+                if (visited[peak.Id])
+                    continue;
+                visited[peak.Id] = true;
                 foreach (var edge in graph.Vertexes[peak])
                 {
                     int s = lengthsFromBeginning[peak.Id];
@@ -51,34 +81,15 @@ namespace Algorithms
                         previousVertex[edge.End] = edge.Begin;
                     }
                 }
-                graph.Vertexes[peak].Clear();
-                if (peak.Id == endVertexIndex)
+                if (peak.Id == EndVertexIndex)
                     break;
             }
         }
 
-        protected override void initializeProblem()
-        {
-            int graphSize = 6;
-            createGraph(graphSize);
-            startVertexIndex = 0;
-            endVertexIndex = 3;
-
-            previousVertex = new Dictionary<Vertex, Vertex>(graphSize);
-            lengthsFromBeginning = new List<int>();
-            for (int i = 0; i < graphSize; i++)
-            {
-                lengthsFromBeginning.Add(int.MaxValue);
-                previousVertex[new Vertex(i)] = new Vertex(-1);
-            }
-
-            lengthsFromBeginning[startVertexIndex] = 0;
-            priorityQueue = new SortedSet<Node>();
-        }
-
         protected override void outputResult()
         {
-            int e = endVertexIndex;
+            int e = EndVertexIndex;
+            OptimalResult = lengthsFromBeginning[e];
             Console.WriteLine("optymalna droga wynosi {0}", lengthsFromBeginning[e]);
             Console.WriteLine("Kolejne wierzchołki odwiedzane");
             int i = e;
@@ -87,25 +98,11 @@ namespace Algorithms
             {
                 stack.Push(i);
                 i = previousVertex[new Vertex(i)].Id;
-            } 
+            }
             while (stack.Count > 0)
             {
                 Console.Write(stack.Pop() + " ");
             }
-        }
-
-        void createGraph(int graphSize)
-        {
-            graph = new Graph(graphSize);
-            graph.AddEdge(3, 0, 1);
-            graph.AddEdge(1, 1, 2);
-            graph.AddEdge(3, 3, 1);
-            graph.AddEdge(3, 2, 3);
-            graph.AddEdge(1, 2, 5);
-            graph.AddEdge(1, 5, 3);
-            graph.AddEdge(6, 5, 0);
-            graph.AddEdge(2, 4, 5);
-            graph.AddEdge(3, 0, 4);
         }
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Algorithms
 {
+    public delegate dynamic InitializeProblemHandler();
     public interface IAlgorithm
     {
         void Run();
+        void Initialize(InitializeProblemHandler initializeProblemHandler);
     }
 }

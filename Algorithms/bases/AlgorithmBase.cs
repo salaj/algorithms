@@ -8,7 +8,14 @@ namespace Algorithms
 {
     public abstract class AlgorithmBase : IAlgorithm
     {
-        public void Run()
+        protected InitializeProblemHandler initializeProblemHandler;
+
+        public virtual void Initialize(InitializeProblemHandler initializeProblemHandler)
+        {
+            
+        }
+
+        public virtual void Run()
         {
             initializeProblem();
             solveProblem();

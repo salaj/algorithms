@@ -10,7 +10,7 @@ namespace Algorithms
     {
         static void Main(string[] args)
         {
-            IAlgorithm dijkstra = new Dijkstra();
+            IAlgorithm dijkstra = new Dijkstra(0, 3);
             dijkstra.Run();
         }
     }
