@@ -9,6 +9,7 @@ namespace Algorithms
     public abstract class AlgorithmBase : IAlgorithm
     {
         protected InitializeProblemHandler initializeProblemHandler;
+        protected bool isAlgorithmTriggered = false;
 
         public virtual void Initialize(InitializeProblemHandler initializeProblemHandler)
         {
@@ -17,6 +18,7 @@ namespace Algorithms
 
         public virtual void Run()
         {
+            isAlgorithmTriggered = true;
             initializeProblem();
             solveProblem();
             outputResult();

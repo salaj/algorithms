@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="algorithms\BFS.cs" />
+    <Compile Include="algorithms\DFS.cs" />
+    <Compile Include="algorithms\EulerCycle.cs" />
     <Compile Include="bases\GraphBase.cs" />
     <Compile Include="builders\Builder.cs" />
     <Compile Include="bases\Algorithm.cs" />

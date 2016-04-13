@@ -8,14 +8,24 @@ namespace Algorithms
 {
     public struct Edge
     {
-        public Edge(int weight = Int32.MaxValue, int begin = 0, int end = 0)
+        public Edge(int begin = 0, int end = 0, int weight = Int32.MaxValue)
         {
             Begin = new Vertex(begin);
             End = new Vertex(end);
             Weight = weight;
         }
 
-        public Edge Reverse => new Edge(Weight, End.Id, Begin.Id);
+        public Edge(char begin = 'a', char end = 'a', int weight = Int32.MaxValue)
+        {
+            Begin = new Vertex(begin - 'a');
+            End = new Vertex(end - 'a');
+            Weight = weight;
+        }
+
+        public char From => (char) (Begin.Id + 'a');
+        public char To => (char)(End.Id + 'a');
+
+        public Edge Reverse => new Edge(End.Id, Begin.Id, Weight);
         public Vertex Begin { get; set; }
         public Vertex End { get; set; }
         public int Weight { get; }

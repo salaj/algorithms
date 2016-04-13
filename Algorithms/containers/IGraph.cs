@@ -8,8 +8,10 @@ namespace Algorithms
 {
     public interface IGraph
     {
-        IDictionary<Vertex, IList<Edge>> Vertexes { get; }
+        IDictionary<Vertex, IList<Edge>> EdgesOut { get; }
+        IDictionary<Vertex, IList<Edge>> EdgesIn { get; }
         bool IsDirected { get; }
+        bool IsCoherent { get; }
         int EdgesCount { get; }
         int VertexCount { get; }
         void AddEdge(int w = 0, int b = 0, int e = 0);

@@ -22,15 +22,15 @@ namespace Algorithms
             int graphSize = 6;
             return GraphBuilder.Instance.Build(graphSize, new List<Edge>()
             {
-                new Edge(3, 0, 1),
-                new Edge(1, 1, 2),
-                new Edge(3, 3, 1),
-                new Edge(3, 2, 3),
-                new Edge(1, 2, 5),
-                new Edge(1, 5, 3),
-                new Edge(6, 5, 0),
-                new Edge(2, 4, 5),
-                new Edge(3, 0, 4)
+                new Edge(0, 1, 3),
+                new Edge(1, 2, 1),
+                new Edge(3, 1, 3),
+                new Edge(2, 3, 3),
+                new Edge(2, 5, 1),
+                new Edge(5, 3, 1),
+                new Edge(5, 0, 6),
+                new Edge(4, 5, 2),
+                new Edge(0, 4, 3)
             }, true);
         };
 
@@ -71,7 +71,7 @@ namespace Algorithms
                 priorityQueue.Remove(priorityQueue.First().Key);
                 foreach (var peak in peaks)
                 {
-                    foreach (var edge in graph.Vertexes[peak])
+                    foreach (var edge in graph.EdgesOut[peak])
                     {
                         int s = lengthsFromBeginning[peak.Id];
                         int w = edge.Weight;

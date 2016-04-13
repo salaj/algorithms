@@ -50,7 +50,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BFSTest.cs" />
+    <Compile Include="DFSTest.cs" />
     <Compile Include="DijkstraTest.cs" />
+    <Compile Include="EulerCycleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
